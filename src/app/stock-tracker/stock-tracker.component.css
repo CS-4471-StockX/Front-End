@@ -1,0 +1,106 @@
+body {
+    background-color: black;
+    font-family: Manrope, sans-serif;
+}
+
+.stock-symbol {
+    font-size: xxx-large;
+    font-weight: 700;
+    color: white;
+    /* background-color: #1155cc; */
+    background-color: #0b9e39;
+}
+
+.stock-name {
+    font-size: xxx-large;
+    font-weight: 700;
+    color: white;
+}
+
+.spacer {
+    margin: 0 2em;
+}
+
+.search-bar {
+    margin-top: 1em;
+    border-radius: 30px;
+}
+
+.form {
+    position: relative
+}
+
+.form .fa-search {
+    position: absolute;
+    top: 16px;
+    left: 20px;
+    color: #9ca3af
+}
+
+.form span {
+    position: absolute;
+    right: 17px;
+    top: 13px;
+    padding: 2px;
+    border-left: 1px solid #d1d5db
+}
+
+.form-input {
+    height: 50px;
+    text-indent: 33px;
+    border-radius: 10px
+}
+
+.form-input:focus {
+    box-shadow: none;
+    border: none
+}
+
+#stock-history-chart {
+    margin: 2em auto;
+    margin-bottom: 0.5em;
+    padding-right: 2em;
+}
+
+.header {
+    padding: 1em 0em;
+}
+
+.overview-header {
+    color: white;
+    font-size: xxx-large;
+    font-weight: 800;
+    padding: 1em;
+}
+
+.overview-content {
+    margin: 2em;
+    padding: 1.5em;
+}
+
+.stat-title {
+    color: white;
+}
+
+.stat-value {
+    color: white;
+    font-weight: 600;
+    font-size: x-large;
+}
+
+.container-fluid {
+    width: 90%;
+    margin: 0;
+}
+
+.durations {
+    color: #808080;
+}
+
+.durations a {
+    padding: 1em;
+}
+
+.durations a:hover {
+    color: white;
+}
