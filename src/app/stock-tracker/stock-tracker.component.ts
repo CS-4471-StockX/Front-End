@@ -1,12 +1,44 @@
 import { Component, OnInit } from '@angular/core';
-import { MarketindexTrackerComponent } from '../marketindex-tracker/marketindex-tracker.component';
+import { HttpClient } from '@angular/common/http';
+import { createOfflineCompileUrlResolver } from '@angular/compiler';
 
 @Component({
   selector: 'app-stock-tracker',
   templateUrl: './stock-tracker.component.html',
   styleUrls: ['./stock-tracker.component.css']
 })
+
+
 export class StockTrackerComponent implements OnInit {
+  currentPrice: number = 0
+  priceChange: number = 0
+  percentageChange: number = 0
+  dayHigh: number = 0
+  dayLow: number = 0 
+  openingPrice: number = 0
+  previousClosingPrice: number = 0
+
+  constructor(
+    private httpClient: HttpClient,
+  ) { }
+
+  ngOnInit(): void {
+    this.getStockInfo();
+  }
+
+  getStockInfo(){
+    this.httpClient.get<any>('http://livestocktracker-env.eba-exuutjmx.us-east-2.elasticbeanstalk.com/live-stock-tracker-ws/stock-quote?ticker=TSLA').subscribe(
+      response => {
+        this.currentPrice = response.currentPrice
+        this.priceChange = response.priceChange
+        this.percentageChange = response.percentageChange
+        this.dayHigh = response.dayHigh
+        this.dayLow = response.dayLow
+        this.openingPrice = response.openingPrice
+        this.previousClosingPrice = response.previousClosingPrice
+      }
+    )
+  }
 
   public chartType: string = 'line';
 
@@ -68,11 +100,6 @@ export class StockTrackerComponent implements OnInit {
   // onChartClick(event: any) {
   //   console.log(this.chart.getPointDataAtEvent(event));
   // }
-  
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
   public getChartData() {
 

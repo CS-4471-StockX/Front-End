@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { StockTrackerComponent } from './stock-tracker/stock-tracker.component';
 import { fromEventPattern } from 'rxjs';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { fromEventPattern } from 'rxjs';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ChartsModule
+    ChartsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

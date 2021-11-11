@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StockTrackerComponent } from './stock-tracker.component';
 
+
 describe('StockTrackerComponent', () => {
   let component: StockTrackerComponent;
   let fixture: ComponentFixture<StockTrackerComponent>;
