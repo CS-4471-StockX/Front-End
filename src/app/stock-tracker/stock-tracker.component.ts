@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from "@angular/router";
 import { MarketindexTrackerComponent } from '../marketindex-tracker/marketindex-tracker.component';
 
 @Component({
@@ -6,6 +7,7 @@ import { MarketindexTrackerComponent } from '../marketindex-tracker/marketindex-
   templateUrl: './stock-tracker.component.html',
   styleUrls: ['./stock-tracker.component.css']
 })
+
 export class StockTrackerComponent implements OnInit {
 
   public chartType: string = 'line';
@@ -23,6 +25,12 @@ export class StockTrackerComponent implements OnInit {
       borderWidth: 2,
     }
   ];
+
+  public stockList: Array<any> = ["ABC", "BBC", "CBC"]
+
+  public resultsList: Array<any> = []
+
+  public searchValue: string = ""
 
   public chartOptions: any = {
     responsive: true,
@@ -69,7 +77,7 @@ export class StockTrackerComponent implements OnInit {
   //   console.log(this.chart.getPointDataAtEvent(event));
   // }
   
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -85,4 +93,8 @@ export class StockTrackerComponent implements OnInit {
 
   public chartClicked(e: any): void { }
   public chartHovered(e: any): void { }
+
+  public getSearchResults() {
+    this.router.navigate(['/stock-tracker-search', this.searchValue])
+  }
 }

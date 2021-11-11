@@ -1,0 +1,65 @@
+body {
+    background-color: black;
+    font-family: Manrope, sans-serif;
+}
+
+.results-title {
+    font-size: xxx-large;
+    font-weight: 700;
+    color: white;
+}
+
+.spacer {
+    margin: 0 2em;
+}
+
+.search-bar {
+    margin-top: 1em;
+    border-radius: 30px;
+}
+
+.header-link {
+    color: white;
+    font-size: xxx-large;
+    font-weight: 800;
+    padding: 1em;
+}
+
+.form {
+    position: relative
+}
+
+.form .fa-search {
+    position: absolute;
+    top: 16px;
+    left: 20px;
+    color: #9ca3af
+}
+
+.form span {
+    position: absolute;
+    right: 17px;
+    top: 13px;
+    padding: 2px;
+    border-left: 1px solid #d1d5db
+}
+
+.form-input {
+    height: 50px;
+    text-indent: 33px;
+    border-radius: 10px
+}
+
+.form-input:focus {
+    box-shadow: none;
+    border: none
+}
+
+.header {
+    padding: 1em 0em;
+}
+
+.container-fluid {
+    width: 90%;
+    margin: 0;
+}
