@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MarketindexTrackerComponent } from './marketindex-tracker.component';
+import { MarketIndexTrackerComponent } from './marketindex-tracker.component';
 
-describe('MarketindexTrackerComponent', () => {
-  let component: MarketindexTrackerComponent;
-  let fixture: ComponentFixture<MarketindexTrackerComponent>;
+describe('MarketIndexTrackerComponent', () => {
+  let component: MarketIndexTrackerComponent;
+  let fixture: ComponentFixture<MarketIndexTrackerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MarketindexTrackerComponent ]
+      declarations: [ MarketIndexTrackerComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MarketindexTrackerComponent);
+    fixture = TestBed.createComponent(MarketIndexTrackerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
