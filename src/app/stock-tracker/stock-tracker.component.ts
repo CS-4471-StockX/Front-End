@@ -14,7 +14,7 @@ export class StockTrackerComponent implements OnInit {
   priceChange: number = 0
   percentageChange: number = 0
   dayHigh: number = 0
-  dayLow: number = 0 
+  dayLow: number = 0
   openingPrice: number = 0
   previousClosingPrice: number = 0
 
@@ -27,7 +27,7 @@ export class StockTrackerComponent implements OnInit {
   }
 
   getStockInfo(){
-    this.httpClient.get<any>('http://livestocktracker-env.eba-exuutjmx.us-east-2.elasticbeanstalk.com/live-stock-tracker-ws/stock-quote?ticker=TSLA').subscribe(
+    this.httpClient.get<any>('https://live-stock-tracker.stockx.software/stock-quote?ticker=TSLA').subscribe(
       response => {
         this.currentPrice = response.currentPrice
         this.priceChange = response.priceChange
@@ -70,9 +70,9 @@ export class StockTrackerComponent implements OnInit {
           fontColor: "#fff",
           fontSize: 18,
           fontFamily: "Manrope",
-        }, 
-        gridLines: { 
-          color: "#222" 
+        },
+        gridLines: {
+          color: "#222"
         }
       }],
       xAxes: [{
@@ -82,9 +82,9 @@ export class StockTrackerComponent implements OnInit {
           fontColor: "#fff",
           fontSize: 18,
           fontFamily: "Manrope",
-        }, 
-        gridLines: { 
-          color: "#222" 
+        },
+        gridLines: {
+          color: "#222"
         }
       }]
     },
@@ -94,7 +94,7 @@ export class StockTrackerComponent implements OnInit {
       fontColor: "#fff",
       fontSize: 25,
       fontFamily: "Manrope",
-    }, 
+    },
   };
 
   // onChartClick(event: any) {
@@ -104,11 +104,11 @@ export class StockTrackerComponent implements OnInit {
   public getChartData() {
 
   }
-  
+
   public changeChartDuration() {
 
   }
-  
+
 
   public chartClicked(e: any): void { }
   public chartHovered(e: any): void { }
