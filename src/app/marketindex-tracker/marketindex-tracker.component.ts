@@ -117,8 +117,8 @@ export class MarketIndexTrackerComponent implements OnInit {
 
   onClickWeek(){
     this.marketIndexGraphDuration = 'week'
-    this.chartLabels = Object.keys(this.marketIndexWeekData)
-    this.chartData = Object.values(this.marketIndexWeekData)
+    this.chartLabels = Object.keys(this.marketIndexWeekData).reverse()
+    this.chartData = Object.values(this.marketIndexWeekData).reverse()
     this.chartDatasets = [{data: this.chartData, label: this.marketIndexSymbol, lineTension: 0}]
 
     this.weekLinkColour = "#ffffff"
@@ -131,8 +131,8 @@ export class MarketIndexTrackerComponent implements OnInit {
 
   onClickMonth(){
     this.marketIndexGraphDuration = 'month'
-    this.chartLabels = Object.keys(this.marketIndexMonthData)
-    this.chartData = Object.values(this.marketIndexMonthData)
+    this.chartLabels = Object.keys(this.marketIndexMonthData).reverse()
+    this.chartData = Object.values(this.marketIndexMonthData).reverse()
     this.chartDatasets = [{data: this.chartData, label: this.marketIndexSymbol, lineTension: 0}]
 
     this.weekLinkColour = "#808080"
@@ -145,8 +145,8 @@ export class MarketIndexTrackerComponent implements OnInit {
 
   onClickYear(){
     this.marketIndexGraphDuration = 'year'
-    this.chartLabels = Object.keys(this.marketIndexYearData)
-    this.chartData = Object.values(this.marketIndexYearData)
+    this.chartLabels = Object.keys(this.marketIndexYearData).reverse()
+    this.chartData = Object.values(this.marketIndexYearData).reverse()
     this.chartDatasets = [{data: this.chartData, label: this.marketIndexSymbol, lineTension: 0}]
 
     this.weekLinkColour = "#808080"
