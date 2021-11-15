@@ -27,7 +27,7 @@ export class StockTrackerComponent implements OnInit {
   }
 
   getStockInfo(){
-    this.httpClient.get<any>('https://livestocktracker-env.eba-exuutjmx.us-east-2.elasticbeanstalk.com/live-stock-tracker-ws/stock-quote?ticker=TSLA').subscribe(
+    this.httpClient.get<any>('https://live-stock-tracker.stockx.software/stock-quote?ticker=TSLA').subscribe(
       response => {
         this.currentPrice = response.currentPrice
         this.priceChange = response.priceChange
