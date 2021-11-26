@@ -47,13 +47,13 @@ export class StockTrackerComponent implements OnInit {
   getStockInfo(){
     this.httpClient.get<any>('https://live-stock-tracker.stockx.software/stock-quote?ticker=TSLA').subscribe(
       response => {
-        this.currentPrice = response.currentPrice
-        this.priceChange = response.priceChange
-        this.percentageChange = response.percentageChange
-        this.dayHigh = response.dayHigh
-        this.dayLow = response.dayLow
-        this.openingPrice = response.openingPrice
-        this.previousClosingPrice = response.previousClosingPrice
+        this.currentPrice = response.currentPrice.toFixed(2)
+        this.priceChange = response.priceChange.toFixed(2)
+        this.percentageChange = response.percentageChange.toFixed(2)
+        this.dayHigh = response.dayHigh.toFixed(2)
+        this.dayLow = response.dayLow.toFixed(2)
+        this.openingPrice = response.openingPrice.toFixed(2)
+        this.previousClosingPrice = response.previousClosingPrice.toFixed(2)
       }
     )
   }
@@ -106,7 +106,7 @@ export class StockTrackerComponent implements OnInit {
     this.monthLinkColour = "#808080"
     this.yearLinkColour = "#808080"
 
-    
+
     console.log(this.chartData)
   }
 
@@ -158,7 +158,7 @@ export class StockTrackerComponent implements OnInit {
     console.log(this.chartLabels)
     console.log(this.chartData)
   }
-  
+
   public chartType: string = 'line';
 
   public chartDatasets: Array<any> = [
