@@ -81,6 +81,7 @@ export class StockTrackerComponent implements OnInit {
     this.hourLinkColour = "#ffffff"
     this.dayLinkColour = "#808080"
     this.weekLinkColour = "#808080"
+    this.monthLinkColour = "#808080"
     this.yearLinkColour = "#808080"
 
     console.log(this.chartLabels)
