@@ -7,6 +7,7 @@ import { FormBuilder, Validators } from '@angular/forms';
   templateUrl: './marketindex-tracker.component.html',
   styleUrls: ['./marketindex-tracker.component.css']
 })
+
 export class MarketIndexTrackerComponent implements OnInit {
   submitted = false;
 
@@ -31,7 +32,7 @@ export class MarketIndexTrackerComponent implements OnInit {
   priceChange: number = 0
   percentageChange: number = 0
   dayHigh: number = 0
-  dayLow: number = 0
+  dayLow: number = 0 
 
   constructor(
     private httpClient: HttpClient,
@@ -46,8 +47,9 @@ export class MarketIndexTrackerComponent implements OnInit {
     this.marketIndexListForm.get('marketIndexName')!.setValue(e.target.value, {
        onlySelf: true
     })
-
+    
     this.onSubmit()
+    console.log("change")
   }
 
   public handleDropdownError = (controlName: string, errorName: string) => {
@@ -187,9 +189,9 @@ export class MarketIndexTrackerComponent implements OnInit {
           fontColor: "#fff",
           fontSize: 18,
           fontFamily: "Manrope",
-        },
-        gridLines: {
-          color: "#222"
+        }, 
+        gridLines: { 
+          color: "#222" 
         }
       }],
       xAxes: [{
@@ -199,9 +201,9 @@ export class MarketIndexTrackerComponent implements OnInit {
           fontColor: "#fff",
           fontSize: 18,
           fontFamily: "Manrope",
-        },
-        gridLines: {
-          color: "#222"
+        }, 
+        gridLines: { 
+          color: "#222" 
         }
       }]
     },
@@ -211,6 +213,6 @@ export class MarketIndexTrackerComponent implements OnInit {
       fontColor: "#fff",
       fontSize: 25,
       fontFamily: "Manrope",
-    },
+    }, 
   };
 }
