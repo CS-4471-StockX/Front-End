@@ -31,7 +31,7 @@ export class MarketIndexTrackerComponent implements OnInit {
   priceChange: number = 0
   percentageChange: number = 0
   dayHigh: number = 0
-  dayLow: number = 0 
+  dayLow: number = 0
 
   constructor(
     private httpClient: HttpClient,
@@ -46,7 +46,7 @@ export class MarketIndexTrackerComponent implements OnInit {
     this.marketIndexListForm.get('marketIndexName')!.setValue(e.target.value, {
        onlySelf: true
     })
-    
+
     this.onSubmit()
   }
 
@@ -94,11 +94,11 @@ export class MarketIndexTrackerComponent implements OnInit {
     this.httpClient.get<any>('https://market-index-tracker.stockx.software/market-index?ticker=%' + ticker).subscribe(
       response => {
         console.log(response)
-        this.currentPrice = response.price
-        this.priceChange = response.change
-        this.percentageChange = response.changesPercentage
-        this.dayHigh = response.dayHigh
-        this.dayLow = response.dayLow
+        this.currentPrice = response.price.toFixed(2)
+        this.priceChange = response.change.toFixed(2)
+        this.percentageChange = response.changesPercentage.toFixed(2)
+        this.dayHigh = response.dayHigh.toFixed(2)
+        this.dayLow = response.dayLow.toFixed(2)
       }
     )
   }
@@ -187,9 +187,9 @@ export class MarketIndexTrackerComponent implements OnInit {
           fontColor: "#fff",
           fontSize: 18,
           fontFamily: "Manrope",
-        }, 
-        gridLines: { 
-          color: "#222" 
+        },
+        gridLines: {
+          color: "#222"
         }
       }],
       xAxes: [{
@@ -199,9 +199,9 @@ export class MarketIndexTrackerComponent implements OnInit {
           fontColor: "#fff",
           fontSize: 18,
           fontFamily: "Manrope",
-        }, 
-        gridLines: { 
-          color: "#222" 
+        },
+        gridLines: {
+          color: "#222"
         }
       }]
     },
@@ -211,6 +211,6 @@ export class MarketIndexTrackerComponent implements OnInit {
       fontColor: "#fff",
       fontSize: 25,
       fontFamily: "Manrope",
-    }, 
+    },
   };
 }
