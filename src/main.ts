@@ -6,6 +6,8 @@ import { environment } from './environments/environment';
 
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from './aws-exports';
+import { PubSub } from 'aws-amplify';
+import { AWSIoTProvider } from '@aws-amplify/pubsub';
 
 Amplify.configure(awsconfig);
 
@@ -23,3 +25,19 @@ platformBrowserDynamic().bootstrapModule(AppModule)
 (window as any).process = {
   env: { DEBUG: undefined },
 };
+
+// Apply plugin with configuration
+Amplify.addPluggable(new AWSIoTProvider({
+  aws_pubsub_region: 'us-east-2',
+  aws_pubsub_endpoint: 'wss://ayfcr0t3x1f4a-ats.iot.us-east-2.amazonaws.com/mqtt',
+}));
+
+Auth.currentCredentials().then((info) => {
+  console.log(info);
+});
+
+PubSub.subscribe('TSLA').subscribe({
+  next: data => console.log('Message received', data),
+  error: error => console.error(error),
+  complete: () => console.log('Done'),
+});
