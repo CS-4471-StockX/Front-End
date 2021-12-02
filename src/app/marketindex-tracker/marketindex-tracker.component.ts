@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
+import { PubSub } from 'aws-amplify';
+
 
 @Component({
   selector: 'app-marketindex-tracker',
@@ -34,6 +36,9 @@ export class MarketIndexTrackerComponent implements OnInit {
   dayHigh: number = 0
   dayLow: number = 0 
 
+  subData: any = ''
+  topic: string = ''
+
   constructor(
     private httpClient: HttpClient,
     public formBuilder: FormBuilder,
@@ -65,12 +70,15 @@ export class MarketIndexTrackerComponent implements OnInit {
     if(this.marketIndex == 'Dow Jones'){
       this.marketIndexSymbol = 'DOW'
       this.marketIndexTicker = '5EDJI'
+      this.topic = '^DJI'
     } else if (this.marketIndex == 'S&P/TSX Composite Index'){
       this.marketIndexSymbol = 'TSX'
       this.marketIndexTicker = '5EGSPTSE'
+      this.topic = '^GSPTSE'
     } else {
       this.marketIndexSymbol = 'SPX'
       this.marketIndexTicker = '5EGSPC'
+      this.topic = '^GSPC'
     }
 
     this.getMarketIndexInfo(this.marketIndexTicker)
@@ -86,10 +94,11 @@ export class MarketIndexTrackerComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.getMarketIndexInfo(this.marketIndexTicker);
+    this.getMarketIndexInfo(this.marketIndexTicker)
+    this.subscribeMarketIndexInfo(this.topic)
     this.getMarketIndexGraphInfo(this.marketIndexTicker)
+    this.subscribeMarketIndexGraphInfo(this.topic)
     this.onClickWeek()
-    setTimeout(() => 1000)
   }
 
   getMarketIndexInfo(ticker: string){
@@ -105,6 +114,22 @@ export class MarketIndexTrackerComponent implements OnInit {
     )
   }
 
+  subscribeMarketIndexInfo(topic: string){
+    PubSub.subscribe(topic).subscribe({
+      next: data => this.subData = data,
+      error: error => console.error(error),
+      complete: () => console.log('Done'),
+    });
+
+    console.log(this.subData)
+
+    this.currentPrice = this.subData.price.toFixed(2)
+    this.priceChange = this.subData.change.toFixed(2)
+    this.percentageChange = this.subData.changesPercentage.toFixed(2)
+    this.dayHigh = this.subData.dayHigh.toFixed(2)
+    this.dayLow = this.subData.dayLow.toFixed(2)
+  }
+
   getMarketIndexGraphInfo(ticker: string){
     this.httpClient.get<any>('https://market-index-tracker.stockx.software/historical/market-index-price?ticker=%' + ticker).subscribe(
       response => {
@@ -115,6 +140,18 @@ export class MarketIndexTrackerComponent implements OnInit {
         console.log(this.marketIndexWeekData)
       }
     )
+  }
+
+  subscribeMarketIndexGraphInfo(topic: string){
+    PubSub.subscribe(topic).subscribe({
+      next: data => this.subData = data,
+      error: error => console.error(error),
+      complete: () => console.log('Done'),
+    });
+
+    this.marketIndexWeekData = this.subData.fiveDay.historical
+    this.marketIndexMonthData = this.subData.oneMonth.historical
+    this.marketIndexYearData = this.subData.oneYear.historical
   }
 
   onClickWeek(){

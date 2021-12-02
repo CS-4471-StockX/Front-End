@@ -7,6 +7,7 @@ const awsmobile = {
     "aws_cognito_region": "us-east-2",
     "aws_user_pools_id": "us-east-2_2B3tXxSDC",
     "aws_user_pools_web_client_id": "16vddrdfa59e5n5l4d6bl4lalt",
+    "host": "ayfcr0t3x1f4a-ats.iot.us-east-2.amazonaws.com" ,
     "oauth": {},
     "aws_cognito_login_mechanisms": [
         "PREFERRED_USERNAME"

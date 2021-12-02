@@ -6,11 +6,23 @@ import { environment } from './environments/environment';
 
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from './aws-exports';
+import PubSub, { AWSIoTProvider } from '@aws-amplify/pubsub';
+
 
 Amplify.configure(awsconfig);
 
 // >>New - Configuring Auth Module
 Auth.configure(awsconfig);
+
+Amplify.addPluggable(new AWSIoTProvider({
+  aws_pubsub_region: 'us-east-2',
+  aws_pubsub_endpoint: 'wss://ayfcr0t3x1f4a-ats.iot.us-east-2.amazonaws.com/mqtt',
+}));
+
+
+Auth.currentCredentials().then((info) => {
+  console.log(info.identityId);
+});
 
 if (environment.production) {
   enableProdMode();

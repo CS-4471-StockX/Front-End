@@ -16,6 +16,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 /* import AmplifyUIAngularModule  */
 import { AmplifyUIAngularModule } from '@aws-amplify/ui-angular';
 
+import Amplify, { PubSub } from 'aws-amplify';
+import { AWSIoTProvider } from '@aws-amplify/pubsub';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,9 +32,9 @@ import { AmplifyUIAngularModule } from '@aws-amplify/ui-angular';
     ChartsModule,
     HttpClientModule,
     AmplifyUIAngularModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [AWSIoTProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
