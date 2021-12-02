@@ -10,3 +10,8 @@ if (environment.production) {
 
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.error(err));
+
+(window as any).global = window;
+(window as any).process = {
+  env: { DEBUG: undefined },
+};
