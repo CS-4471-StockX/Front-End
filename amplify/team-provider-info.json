@@ -10,6 +10,11 @@
       "StackName": "amplify-stockx-dev-143158",
       "StackId": "arn:aws:cloudformation:us-east-2:901096269907:stack/amplify-stockx-dev-143158/8c1e9a30-40ca-11ec-b617-06115cc01432",
       "AmplifyAppId": "djm3l93jayvzm"
+    },
+    "categories": {
+      "auth": {
+        "stockxad6017a1": {}
+      }
     }
   }
 }

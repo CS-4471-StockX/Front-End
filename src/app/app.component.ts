@@ -10,3 +10,8 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 export class AppComponent {
   title = 'StockX';
 }
+
+(window as any).global = window;
+(window as any).process = {
+  env: { DEBUG: undefined },
+};
