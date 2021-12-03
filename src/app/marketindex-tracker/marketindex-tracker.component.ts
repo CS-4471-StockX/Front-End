@@ -95,6 +95,8 @@ export class MarketIndexTrackerComponent implements OnInit {
       this.onClickYear()
     }
 
+    this.subbedIndex.unsubscribe()
+    this.httpClient.put<any>('https://subscription-manager.stockx.software/unsubscribe?symbol=%' + this.marketIndexTicker + '&service=market-index-tracker-ws', null).subscribe()
     this.subMarketIndexInfo(this.topic)
   }
 
