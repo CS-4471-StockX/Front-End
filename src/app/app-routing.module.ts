@@ -7,10 +7,10 @@ import { MarketIndexTrackerComponent } from './marketindex-tracker/marketindex-t
 import { StockTrackerComponent } from './stock-tracker/stock-tracker.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent},
+  { path: '', component: StockTrackerComponent},
   { path: 'stock-tracker', component: StockTrackerComponent},
   { path: 'market-index', component: MarketIndexTrackerComponent},
-  { path: '**', redirectTo: ''}
+  { path: '**', redirectTo: 'stock-tracker'},
 ];
 
 @NgModule({

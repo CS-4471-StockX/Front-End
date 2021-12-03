@@ -29,7 +29,8 @@ import { AmplifyUIAngularModule } from '@aws-amplify/ui-angular';
     ChartsModule,
     HttpClientModule,
     AmplifyUIAngularModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
