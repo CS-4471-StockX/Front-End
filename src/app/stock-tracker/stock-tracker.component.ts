@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { createOfflineCompileUrlResolver } from '@angular/compiler';
+import { PubSub } from 'aws-amplify';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-stock-tracker',
@@ -34,15 +36,30 @@ export class StockTrackerComponent implements OnInit {
   monthLinkColour: string = '#808080'
   yearLinkColour: string = '#808080'
 
+  subData: any = ''
+  updated: string = 'false'
+  subbedStock: any = ''
+  chartLoaded: boolean = false
+
+  private routeSub: any;  
+
   constructor(
     private httpClient: HttpClient,
-  ) { }
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.getStockInfo();
     this.getStockGraphInfo();
-
+    this.subStockInfo();
+    this.onClickWeek();
   }
+
+  @HostListener('unloaded')
+  ngOnDestroy() {
+    this.subbedStock.unsubscribe()
+    this.httpClient.put<any>('https://subscription-manager.stockx.software/unsubscribe?symbol=' + this.stockSymbol + '&service=live-stock-tracker-ws', null).subscribe()
+  } 
 
   getStockInfo(){
     this.httpClient.get<any>('https://live-stock-tracker.stockx.software/stock-quote?ticker=TSLA').subscribe(
@@ -56,6 +73,39 @@ export class StockTrackerComponent implements OnInit {
         this.previousClosingPrice = response.previousClosingPrice.toFixed(2)
       }
     )
+  }
+
+  subStockInfo(){
+    this.subbedStock = PubSub.subscribe(this.stockSymbol).subscribe({
+      next: data => this.updatePageContent(data),
+      error: error => console.error(error),
+      complete: () => console.log('Done'),
+    })
+
+    this.httpClient.put<any>('https://subscription-manager.stockx.software/subscribe?symbol=' + this.stockSymbol + '&service=live-stock-tracker-ws', null).subscribe()
+  }
+
+  updatePageContent(data: any){
+    console.log("message received", data)
+    this.subData = data
+
+    if(this.currentPrice != undefined){
+      this.currentPrice = this.subData.currentPrice.toFixed(2)
+      this.priceChange = this.subData.priceChange.toFixed(2)
+      this.percentageChange = this.subData.percentageChange.toFixed(2)
+      this.dayHigh = this.subData.dayHigh.toFixed(2)
+      this.dayLow = this.subData.dayLow.toFixed(2)
+      this.openingPrice = this.subData.openingPrice.toFixed(2)
+      this.previousClosingPrice = this.subData.previousClosingPrice.toFixed(2)
+    } else {
+      this.stockHourlyData = this.subData.minutes
+      this.stockDailyData = this.subData.hours
+      this.stockWeeklyData = this.subData.days
+      this.stockMonthlyData = this.subData.days
+      this.stockYearlyData = this.subData.days
+    }
+
+    this.ngOnInit()
   }
 
   getStockGraphInfo(){
@@ -106,7 +156,6 @@ export class StockTrackerComponent implements OnInit {
     this.weekLinkColour = "#808080"
     this.monthLinkColour = "#808080"
     this.yearLinkColour = "#808080"
-
 
     console.log(this.chartData)
   }
@@ -163,10 +212,10 @@ export class StockTrackerComponent implements OnInit {
   public chartType: string = 'line';
 
   public chartDatasets: Array<any> = [
-    { data: [28, 48, 40, 74, 86, 81, 90, 100, 126, 114, 110, 118], label: 'ABC', lineTension: 0 }
+    { data: [this.stockDailyData.prices], label: this.stockSymbol, lineTension: 0 }
   ];
 
-  public chartLabels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  public chartLabels: Array<any> = [this.stockDailyData.times];
 
   public chartColors: Array<any> = [
     {

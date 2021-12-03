@@ -6,8 +6,8 @@ import { environment } from './environments/environment';
 
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from './aws-exports';
-import { PubSub } from 'aws-amplify';
 import { AWSIoTProvider } from '@aws-amplify/pubsub';
+import { PubSub } from 'aws-amplify';
 
 Amplify.configure(awsconfig);
 
@@ -36,8 +36,3 @@ Auth.currentCredentials().then((info) => {
   console.log(info);
 });
 
-PubSub.subscribe('TSLA').subscribe({
-  next: data => console.log('Message received', data),
-  error: error => console.error(error),
-  complete: () => console.log('Done'),
-});

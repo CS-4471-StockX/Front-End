@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
+import { PubSub } from 'aws-amplify';
+import { NavigationStart, Router } from '@angular/router';
 
 @Component({
   selector: 'app-marketindex-tracker',
@@ -9,6 +11,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 
 export class MarketIndexTrackerComponent implements OnInit {
+  private routeSub: any;
+
   submitted = false;
 
   marketIndexList: any = ['S&P 500', 'Dow Jones', 'S&P/TSX Composite Index']
@@ -32,12 +36,17 @@ export class MarketIndexTrackerComponent implements OnInit {
   priceChange: number = 0
   percentageChange: number = 0
   dayHigh: number = 0
-  dayLow: number = 0 
+  dayLow: number = 0
+  
+  subData: any = ''
+  topic: string = '^DJI'
+  subbedIndex: any = ''
 
   constructor(
     private httpClient: HttpClient,
+    private router: Router,
     public formBuilder: FormBuilder,
-  ) { }
+  ){}
 
   marketIndexListForm = this.formBuilder.group({
     marketIndexName: ['', [Validators.required]]
@@ -65,12 +74,15 @@ export class MarketIndexTrackerComponent implements OnInit {
     if(this.marketIndex == 'Dow Jones'){
       this.marketIndexSymbol = 'DOW'
       this.marketIndexTicker = '5EDJI'
+      this.topic = '^DJI'
     } else if (this.marketIndex == 'S&P/TSX Composite Index'){
       this.marketIndexSymbol = 'TSX'
       this.marketIndexTicker = '5EGSPTSE'
+      this.topic = '^GSPTSE'
     } else {
       this.marketIndexSymbol = 'SPX'
       this.marketIndexTicker = '5EGSPC'
+      this.topic = '^GSPC'
     }
 
     this.getMarketIndexInfo(this.marketIndexTicker)
@@ -84,12 +96,47 @@ export class MarketIndexTrackerComponent implements OnInit {
     }
   }
 
-
   ngOnInit(): void {
     this.getMarketIndexInfo(this.marketIndexTicker);
     this.getMarketIndexGraphInfo(this.marketIndexTicker)
+    this.subMarketIndexInfo(this.topic)
     this.onClickWeek()
-    setTimeout(() => 1000)
+  }
+
+  @HostListener('unloaded')
+  ngOnDestroy() {
+    this.subbedIndex.unsubscribe()
+    this.httpClient.put<any>('https://subscription-manager.stockx.software/unsubscribe?symbol=' + this.marketIndexTicker + '&service=market-index-tracker-ws', null).subscribe()
+  } 
+
+  subMarketIndexInfo(topic: string){
+    this.subbedIndex = PubSub.subscribe(topic).subscribe({
+      next: data => this.updatePageContent(data),
+      error: error => console.error(error),
+      complete: () => console.log('Done'),
+    });
+
+    this.httpClient.put<any>('https://subscription-manager.stockx.software/subscribe?symbol=%' + this.marketIndexTicker + '&service=market-index-tracker-ws', null).subscribe()
+  }
+
+  updatePageContent(data: any){
+    console.log("message received", data)
+
+    this.subData = data
+
+    if(this.currentPrice != undefined){
+      this.currentPrice = this.subData.price.toFixed(2)
+      this.priceChange = this.subData.change.toFixed(2)
+      this.percentageChange = this.subData.changesPercentage.toFixed(2)
+      this.dayHigh = this.subData.dayHigh.toFixed(2)
+      this.dayLow = this.subData.dayLow.toFixed(2)
+    } else {
+      this.marketIndexWeekData = this.subData.fiveDay.historical
+      this.marketIndexMonthData = this.subData.oneMonth.historical
+      this.marketIndexYearData = this.subData.oneYear.historical
+    }
+
+    this.ngOnInit()
   }
 
   getMarketIndexInfo(ticker: string){
