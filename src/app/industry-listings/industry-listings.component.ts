@@ -81,7 +81,7 @@ export class IndustryListingsComponent implements OnInit {
       complete: () => console.log('Done'),
     });
 
-    this.httpClient.put<any>('https://subscription-manager.stockx.software/subscribe?symbol=%' + this.industryTicker + '&service=industry-stock-listings-ws', null).subscribe()
+    this.httpClient.put<any>('https://subscription-manager.stockx.software/subscribe?symbol=' + this.industryTicker + '&service=industry-stock-listings-ws', null).subscribe()
   }
 
   updatePageContent(data: any){
