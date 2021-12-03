@@ -68,6 +68,10 @@ export class StockTrackerComponent implements OnInit {
     this.apiCallGraph = 'https://live-stock-tracker.stockx.software/graphs?ticker=' + symbol
     this.getStockInfo();
     this.getStockGraphInfo();
+    if(this.subData != ''){
+      this.subbedStock.unsubscribe()
+      this.httpClient.put<any>('https://subscription-manager.stockx.software/unsubscribe?symbol=' + this.stockSymbol + '&service=live-stock-tracker-ws', null).subscribe()
+    }
     this.subStockInfo();
     this.onClickWeek();
   }
@@ -98,7 +102,6 @@ export class StockTrackerComponent implements OnInit {
       error: error => console.error(error),
       complete: () => console.log('Done'),
     })
-
     this.httpClient.put<any>('https://subscription-manager.stockx.software/subscribe?symbol=' + this.stockSymbol + '&service=live-stock-tracker-ws', null).subscribe()
   }
 
@@ -121,6 +124,9 @@ export class StockTrackerComponent implements OnInit {
       this.stockMonthlyData = this.subData.days
       this.stockYearlyData = this.subData.days
     }
+
+    this.subbedStock.unsubscribe()
+    this.httpClient.put<any>('https://subscription-manager.stockx.software/unsubscribe?symbol=' + this.stockSymbol + '&service=live-stock-tracker-ws', null).subscribe()
 
     window.location.reload()
   }

@@ -19,10 +19,11 @@ const routes: Routes = [
   { path: 'currency-tracker-search/:search', component: CurrencyTrackerSearchComponent},
   { path: 'industry-listings', component: IndustryListingsComponent},
   { path: '**', redirectTo: 'stock-tracker'},
+  { path: '', component: StockTrackerComponent, runGuardsAndResolvers: 'always' }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: "reload"})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
