@@ -107,7 +107,7 @@ export class StockTrackerComponent implements OnInit {
     this.subData = data
 
     if(this.currentPrice != undefined){
-      this.currentPrice = this.subData.currentPrice.toFixed(2)
+      this.currentPrice = this.subData.currentPrice
       this.priceChange = this.subData.priceChange.toFixed(2)
       this.percentageChange = this.subData.percentageChange.toFixed(2)
       this.dayHigh = this.subData.dayHigh.toFixed(2)
@@ -122,7 +122,16 @@ export class StockTrackerComponent implements OnInit {
       this.stockYearlyData = this.subData.days
     }
 
-    this.ngOnInit()
+    this.reloadComponent()
+  }
+
+  reloadComponent() {
+    let currentUrl = this.router.url;
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate([currentUrl]);
+    
+    this.onClickWeek()
   }
 
   getStockGraphInfo(){
