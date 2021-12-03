@@ -65,6 +65,7 @@ export class IndustryListingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getIndustryListingInfo(this.industryTicker);
+    this.subIndustryListingInfo();
     setTimeout(() => 1000)
   }
 
@@ -74,7 +75,7 @@ export class IndustryListingsComponent implements OnInit {
     this.httpClient.put<any>('https://subscription-manager.stockx.software/unsubscribe?symbol=' + this.industryTicker + '&service=industry-stock-listings-ws', null).subscribe()
   }
 
-  subIndustryListingInfo(topic: string){
+  subIndustryListingInfo(){
     this.subbedIndustry = PubSub.subscribe(this.industryTicker).subscribe({
       next: data => this.updatePageContent(data),
       error: error => console.error(error),
