@@ -122,7 +122,7 @@ export class StockTrackerComponent implements OnInit {
       this.stockYearlyData = this.subData.days
     }
 
-    this.reloadComponent()
+    window.location.reload()
   }
 
   reloadComponent() {
