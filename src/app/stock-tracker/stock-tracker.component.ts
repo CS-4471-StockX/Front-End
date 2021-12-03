@@ -90,22 +90,32 @@ export class StockTrackerComponent implements OnInit {
     this.subData = data
 
     if(this.currentPrice != undefined){
-      this.currentPrice = this.subData.currentPrice.toFixed(2)
+      console.log("CHECK")
+      this.currentPrice = this.subData.currentPrice
       this.priceChange = this.subData.priceChange.toFixed(2)
       this.percentageChange = this.subData.percentageChange.toFixed(2)
       this.dayHigh = this.subData.dayHigh.toFixed(2)
       this.dayLow = this.subData.dayLow.toFixed(2)
       this.openingPrice = this.subData.openingPrice.toFixed(2)
       this.previousClosingPrice = this.subData.previousClosingPrice.toFixed(2)
+      this.reloadComponent() 
     } else {
       this.stockHourlyData = this.subData.minutes
       this.stockDailyData = this.subData.hours
       this.stockWeeklyData = this.subData.days
       this.stockMonthlyData = this.subData.days
       this.stockYearlyData = this.subData.days
+      this.reloadComponent()
     }
+  }
 
-    this.ngOnInit()
+  reloadComponent() {
+    let currentUrl = this.router.url;
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate([currentUrl]);
+    
+    this.onClickWeek()
   }
 
   getStockGraphInfo(){
