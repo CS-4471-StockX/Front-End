@@ -57,9 +57,12 @@ export class IndustryListingsComponent implements OnInit {
     this.industryListing = JSON.parse(this.industryListing)
     this.industryListing = this.industryListing.industryName
 
+    let temp = this.industryTicker
     this.industryTicker = this.industryListing
 
     this.getIndustryListingInfo(this.industryTicker)
+    this.subbedIndustry.unsubscribe()
+    this.httpClient.put<any>('https://subscription-manager.stockx.software/unsubscribe?symbol=' + temp + '&service=industry-stock-listings-ws', null).subscribe()
     this.subIndustryListingInfo(this.industryTicker)
   }
 
