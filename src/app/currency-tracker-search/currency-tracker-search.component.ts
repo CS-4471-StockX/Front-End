@@ -51,7 +51,7 @@ export class CurrencyTrackerSearchComponent implements OnInit {
   @HostListener('unloaded')
   ngOnDestroy() {
     this.subbedCurrency.unsubscribe()
-    this.httpClient.put<any>('https://subscription-manager.stockx.software/unsubscribe?symbol=' + this.currency1 + '_' + this.currency2 + '&service=currency-tracker-tracker-ws', null).subscribe()
+    this.httpClient.put<any>('https://subscription-manager.stockx.software/unsubscribe?symbol=' + this.currency1 + '_' + this.currency2 + '&service=currency-tracker-ws', null).subscribe()
   }
 
   getCurrencyInfo(x: any, y: any){
@@ -72,7 +72,7 @@ export class CurrencyTrackerSearchComponent implements OnInit {
       complete: () => console.log('Done'),
     })
 
-    this.httpClient.put<any>('https://subscription-manager.stockx.software/subscribe?symbol=' + this.stockSymbol + '&service=live-stock-tracker-ws', null).subscribe()
+    this.httpClient.put<any>('https://subscription-manager.stockx.software/subscribe?symbol=' + this.currency1 + '_' + this.currency2 + '&service=currency-tracker-ws', null).subscribe()
   }
 
   updatePageContent(data: any){
