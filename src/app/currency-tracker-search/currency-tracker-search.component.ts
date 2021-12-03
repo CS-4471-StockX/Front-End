@@ -45,6 +45,7 @@ export class CurrencyTrackerSearchComponent implements OnInit {
     }
     this.getCurrencyInfo(this.currency1, this.currency2);
     this.getCurrencyGraphInfo(this.currency1, this.currency2);
+    this.subCurrencyInfo();
 
   }
 
@@ -65,7 +66,7 @@ export class CurrencyTrackerSearchComponent implements OnInit {
     )
   }
 
-  subStockInfo(){
+  subCurrencyInfo(){
     this.subbedCurrency = PubSub.subscribe(this.currency1 + '_' + this.currency2).subscribe({
       next: data => this.updatePageContent(data),
       error: error => console.error(error),
