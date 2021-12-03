@@ -93,6 +93,10 @@ export class StockTrackerComponent implements OnInit {
   }
 
   subStockInfo(){
+    if (this.subbedStock != ''){
+      this.subbedStock.unsubscribe()
+      this.httpClient.put<any>('https://subscription-manager.stockx.software/unsubscribe?symbol=' + this.stockSymbol + '&service=live-stock-tracker-ws', null).subscribe()
+    }
     this.subbedStock = PubSub.subscribe(this.stockSymbol).subscribe({
       next: data => this.updatePageContent(data),
       error: error => console.error(error),
