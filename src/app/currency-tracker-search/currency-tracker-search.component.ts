@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from "@angular/router";
+import { PubSub } from 'aws-amplify';
 import { ActivatedRoute } from '@angular/router';
-import { createOfflineCompileUrlResolver } from '@angular/compiler';
 
 @Component({
-  selector: 'app-currency-tracker',
-  templateUrl: './currency-tracker.component.html',
-  styleUrls: ['./currency-tracker.component.css']
+  selector: 'app-currency-tracker-search',
+  templateUrl: './currency-tracker-search.component.html',
+  styleUrls: ['./currency-tracker-search.component.css']
 })
-export class CurrencyTrackerComponent implements OnInit {
+export class CurrencyTrackerSearchComponent implements OnInit {
   currency1: string = "USD"
   currency2: string = "CAD"
   chartTitle: string = ""
@@ -23,6 +23,11 @@ export class CurrencyTrackerComponent implements OnInit {
   public resultsList: Array<any> = []
   public searchValue: string = ""
 
+  subData: any = ''
+  updated: string = 'false'
+  subbedCurrency: any = ''
+  chartLoaded: boolean = false
+
   private temp: any
 
   constructor(
@@ -32,17 +37,21 @@ export class CurrencyTrackerComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.weekLinkColour = '#808080'
     this.temp = this.route.params.subscribe(params => {this.searchValue = params['search']})
     if (this.searchValue != null) {
       this.currency1 = this.searchValue.substring(0,3)
       this.currency2 = this.searchValue.substring(this.searchValue.indexOf(":") + 1)
-    } else {
-      this.currency1 = "USD"
-      this.currency2 = "CAD"
     }
     this.getCurrencyInfo(this.currency1, this.currency2);
     this.getCurrencyGraphInfo(this.currency1, this.currency2);
 
+  }
+
+  @HostListener('unloaded')
+  ngOnDestroy() {
+    this.subbedCurrency.unsubscribe()
+    this.httpClient.put<any>('https://subscription-manager.stockx.software/unsubscribe?symbol=' + this.currency1 + '_' + this.currency2 + '&service=currency-tracker-tracker-ws', null).subscribe()
   }
 
   getCurrencyInfo(x: any, y: any){
@@ -54,6 +63,28 @@ export class CurrencyTrackerComponent implements OnInit {
         this.chartTitle = this.currency1 + ' to ' + this.currency2;
       }
     )
+  }
+
+  subStockInfo(){
+    this.subbedCurrency = PubSub.subscribe(this.currency1 + '_' + this.currency2).subscribe({
+      next: data => this.updatePageContent(data),
+      error: error => console.error(error),
+      complete: () => console.log('Done'),
+    })
+
+    this.httpClient.put<any>('https://subscription-manager.stockx.software/subscribe?symbol=' + this.stockSymbol + '&service=live-stock-tracker-ws', null).subscribe()
+  }
+
+  updatePageContent(data: any){
+    console.log("message received", data)
+
+    this.subData = data
+
+    this.currency1 = this.subData.currency1
+    this.currency2 = this.subData.currency2
+    this.rate = this.subData.rate
+
+    this.ngOnInit()
   }
 
   getCurrencyGraphInfo(x: any, y: any){
@@ -149,6 +180,6 @@ export class CurrencyTrackerComponent implements OnInit {
 
   public getSearchResults() {
     this.router.navigate(['/currency-tracker-search', this.searchValue])
+    this.ngOnInit()
   }
-
 }
