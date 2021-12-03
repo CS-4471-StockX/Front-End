@@ -71,6 +71,8 @@ export class MarketIndexTrackerComponent implements OnInit {
     this.marketIndex = JSON.parse(this.marketIndex)
     this.marketIndex = this.marketIndex.marketIndexName
 
+    this.httpClient.put<any>('https://subscription-manager.stockx.software/unsubscribe?symbol=%' + this.marketIndexTicker + '&service=market-index-tracker-ws', null).subscribe()
+
     if(this.marketIndex == 'Dow Jones'){
       this.marketIndexSymbol = 'DOW'
       this.marketIndexTicker = '5EDJI'
@@ -96,7 +98,6 @@ export class MarketIndexTrackerComponent implements OnInit {
     }
 
     this.subbedIndex.unsubscribe()
-    this.httpClient.put<any>('https://subscription-manager.stockx.software/unsubscribe?symbol=%' + this.marketIndexTicker + '&service=market-index-tracker-ws', null).subscribe()
     this.subMarketIndexInfo(this.topic)
   }
 
