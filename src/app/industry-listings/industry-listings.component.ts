@@ -80,7 +80,7 @@ export class IndustryListingsComponent implements OnInit {
   }
 
   subIndustryListingInfo(topic: string){
-    this.subbedIndustry = PubSub.subscribe(this.industryTicker).subscribe({
+    this.subbedIndustry = PubSub.subscribe(topic).subscribe({
       next: data => this.updatePageContent(data),
       error: error => console.error(error),
       complete: () => console.log('Done'),
@@ -104,6 +104,7 @@ export class IndustryListingsComponent implements OnInit {
       this.dayLow[i] = this.topStocks[i].dayLow.toFixed(2)
     }
 
+    window.location.reload()
     this.ngOnInit()
   }
 
