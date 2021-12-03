@@ -75,7 +75,7 @@ export class IndustryListingsComponent implements OnInit {
   }
 
   subIndustryListingInfo(topic: string){
-    this.subbedIndustry = PubSub.subscribe(topic).subscribe({
+    this.subbedIndustry = PubSub.subscribe(this.industryTicker).subscribe({
       next: data => this.updatePageContent(data),
       error: error => console.error(error),
       complete: () => console.log('Done'),
