@@ -71,6 +71,8 @@ export class MarketIndexTrackerComponent implements OnInit {
     this.marketIndex = JSON.parse(this.marketIndex)
     this.marketIndex = this.marketIndex.marketIndexName
 
+    this.httpClient.put<any>('https://subscription-manager.stockx.software/unsubscribe?symbol=%' + this.marketIndexTicker + '&service=market-index-tracker-ws', null).subscribe()
+
     if(this.marketIndex == 'Dow Jones'){
       this.marketIndexSymbol = 'DOW'
       this.marketIndexTicker = '5EDJI'
@@ -94,10 +96,13 @@ export class MarketIndexTrackerComponent implements OnInit {
     } else {
       this.onClickYear()
     }
+
+    this.subbedIndex.unsubscribe()
+    this.subMarketIndexInfo(this.topic)
   }
 
   ngOnInit(): void {
-    this.getMarketIndexInfo(this.marketIndexTicker);
+    this.getMarketIndexInfo(this.marketIndexTicker)
     this.getMarketIndexGraphInfo(this.marketIndexTicker)
     this.subMarketIndexInfo(this.topic)
     this.onClickWeek()
@@ -106,7 +111,7 @@ export class MarketIndexTrackerComponent implements OnInit {
   @HostListener('unloaded')
   ngOnDestroy() {
     this.subbedIndex.unsubscribe()
-    this.httpClient.put<any>('https://subscription-manager.stockx.software/unsubscribe?symbol=' + this.marketIndexTicker + '&service=market-index-tracker-ws', null).subscribe()
+    this.httpClient.put<any>('https://subscription-manager.stockx.software/unsubscribe?symbol=%' + this.marketIndexTicker + '&service=market-index-tracker-ws', null).subscribe()
   } 
 
   subMarketIndexInfo(topic: string){

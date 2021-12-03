@@ -1,0 +1,54 @@
+body {
+    background-color: black;
+    font-family: Manrope, sans-serif;
+}
+
+.industry-label {
+    font-size: xxx-large;
+    font-weight: 700;
+    color: white;
+    /* background-color: #1155cc; */
+    background-color: #0b9e39;
+}
+
+.industry-name {
+    font-size: xxx-large;
+    font-weight: 700;
+    color: white;
+}
+
+.industry-dropdown {
+    font-size: 2em;
+    margin-left: 1.8em;
+}
+
+.spacer {
+    margin: 0 2em;
+}
+
+.overview-header {
+    color: white;
+    font-size: xxx-large;
+    font-weight: 800;
+    padding: 1em;
+}
+
+.overview-content {
+    margin: 2em;
+    padding: 1.5em;
+}
+
+.stat-title {
+    color: white;
+}
+
+.stat-value {
+    color: white;
+    font-weight: 600;
+    font-size: x-large;
+}
+
+.container-fluid {
+    width: 90%;
+    margin: 0;
+}

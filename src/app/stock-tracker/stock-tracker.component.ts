@@ -36,6 +36,10 @@ export class StockTrackerComponent implements OnInit {
   monthLinkColour: string = '#808080'
   yearLinkColour: string = '#808080'
 
+  public resultsList: Array<any> = []
+  public searchValue: string = ""
+  apiCallStock: string = 'https://live-stock-tracker.stockx.software/stock-quote?ticker=' + this.searchValue
+  apiCallGraph: string = 'https://live-stock-tracker.stockx.software/graphs?ticker=' + this.searchValue
   subData: any = ''
   updated: string = 'false'
   subbedStock: any = ''
@@ -49,8 +53,25 @@ export class StockTrackerComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const symbol = urlParams.get('symbol');
+    const name = urlParams.get('name');
+    if (symbol == null) {
+      this.stockSymbol = "ABC"
+      this.stockName = "ABC"
+    } else {
+      this.stockSymbol = String(symbol)
+      this.stockName = String(name)
+    }
+    this.apiCallStock = 'https://live-stock-tracker.stockx.software/stock-quote?ticker=' + symbol
+    this.apiCallGraph = 'https://live-stock-tracker.stockx.software/graphs?ticker=' + symbol
     this.getStockInfo();
     this.getStockGraphInfo();
+    if(this.subData != ''){
+      this.subbedStock.unsubscribe()
+      this.httpClient.put<any>('https://subscription-manager.stockx.software/unsubscribe?symbol=' + this.stockSymbol + '&service=live-stock-tracker-ws', null).subscribe()
+    }
     this.subStockInfo();
     this.onClickWeek();
   }
@@ -62,7 +83,7 @@ export class StockTrackerComponent implements OnInit {
   } 
 
   getStockInfo(){
-    this.httpClient.get<any>('https://live-stock-tracker.stockx.software/stock-quote?ticker=TSLA').subscribe(
+    this.httpClient.get<any>(this.apiCallStock).subscribe(
       response => {
         this.currentPrice = response.currentPrice.toFixed(2)
         this.priceChange = response.priceChange.toFixed(2)
@@ -81,7 +102,6 @@ export class StockTrackerComponent implements OnInit {
       error: error => console.error(error),
       complete: () => console.log('Done'),
     })
-
     this.httpClient.put<any>('https://subscription-manager.stockx.software/subscribe?symbol=' + this.stockSymbol + '&service=live-stock-tracker-ws', null).subscribe()
   }
 
@@ -90,7 +110,6 @@ export class StockTrackerComponent implements OnInit {
     this.subData = data
 
     if(this.currentPrice != undefined){
-      console.log("CHECK")
       this.currentPrice = this.subData.currentPrice
       this.priceChange = this.subData.priceChange.toFixed(2)
       this.percentageChange = this.subData.percentageChange.toFixed(2)
@@ -98,18 +117,22 @@ export class StockTrackerComponent implements OnInit {
       this.dayLow = this.subData.dayLow.toFixed(2)
       this.openingPrice = this.subData.openingPrice.toFixed(2)
       this.previousClosingPrice = this.subData.previousClosingPrice.toFixed(2)
-      this.reloadComponent() 
     } else {
       this.stockHourlyData = this.subData.minutes
       this.stockDailyData = this.subData.hours
       this.stockWeeklyData = this.subData.days
       this.stockMonthlyData = this.subData.days
       this.stockYearlyData = this.subData.days
-      this.reloadComponent()
     }
+
+    this.subbedStock.unsubscribe()
+    this.httpClient.put<any>('https://subscription-manager.stockx.software/unsubscribe?symbol=' + this.stockSymbol + '&service=live-stock-tracker-ws', null).subscribe()
+
+    window.location.reload()
   }
 
   reloadComponent() {
+    console.log(this.router.url)
     let currentUrl = this.router.url;
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
@@ -119,7 +142,7 @@ export class StockTrackerComponent implements OnInit {
   }
 
   getStockGraphInfo(){
-    this.httpClient.get<any>('https://live-stock-tracker.stockx.software/graphs?ticker=TSLA').subscribe(
+    this.httpClient.get<any>(this.apiCallGraph).subscribe(
       response => {
         this.stockHourlyData = response.minutes
         this.stockDailyData = response.hours
@@ -291,4 +314,8 @@ export class StockTrackerComponent implements OnInit {
 
   public chartClicked(e: any): void { }
   public chartHovered(e: any): void { }
+
+  public getSearchResults() {
+    this.router.navigate(['/stock-tracker-search', this.searchValue])
+  }
 }
