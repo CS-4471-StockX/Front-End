@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 
 import { ChartsModule } from 'angular-bootstrap-md'
 
@@ -8,6 +9,10 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { StockTrackerComponent } from './stock-tracker/stock-tracker.component';
 import { MarketIndexTrackerComponent } from './marketindex-tracker/marketindex-tracker.component';
+import { CurrencyTrackerComponent } from './currency-tracker/currency-tracker.component';
+import { StockTrackerSearchComponent } from './stock-tracker-search/stock-tracker-search.component';
+import { CurrencyTrackerSearchComponent } from './currency-tracker-search/currency-tracker-search.component';
+import { IndustryListingsComponent } from './industry-listings/industry-listings.component';
 import { fromEventPattern } from 'rxjs';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -17,14 +22,19 @@ import { ReactiveFormsModule } from '@angular/forms';
     AppComponent,
     HomeComponent,
     StockTrackerComponent,
-    MarketIndexTrackerComponent
+    MarketIndexTrackerComponent,
+    CurrencyTrackerComponent,
+    StockTrackerSearchComponent,
+    CurrencyTrackerSearchComponent,
+    IndustryListingsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ChartsModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

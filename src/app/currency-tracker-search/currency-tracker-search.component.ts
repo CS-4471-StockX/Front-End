@@ -2,14 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from "@angular/router";
 import { ActivatedRoute } from '@angular/router';
-import { createOfflineCompileUrlResolver } from '@angular/compiler';
 
 @Component({
-  selector: 'app-currency-tracker',
-  templateUrl: './currency-tracker.component.html',
-  styleUrls: ['./currency-tracker.component.css']
+  selector: 'app-currency-tracker-search',
+  templateUrl: './currency-tracker-search.component.html',
+  styleUrls: ['./currency-tracker-search.component.css']
 })
-export class CurrencyTrackerComponent implements OnInit {
+export class CurrencyTrackerSearchComponent implements OnInit {
   currency1: string = "USD"
   currency2: string = "CAD"
   chartTitle: string = ""
@@ -32,13 +31,11 @@ export class CurrencyTrackerComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.weekLinkColour = '#808080'
     this.temp = this.route.params.subscribe(params => {this.searchValue = params['search']})
     if (this.searchValue != null) {
       this.currency1 = this.searchValue.substring(0,3)
       this.currency2 = this.searchValue.substring(this.searchValue.indexOf(":") + 1)
-    } else {
-      this.currency1 = "USD"
-      this.currency2 = "CAD"
     }
     this.getCurrencyInfo(this.currency1, this.currency2);
     this.getCurrencyGraphInfo(this.currency1, this.currency2);
@@ -149,6 +146,6 @@ export class CurrencyTrackerComponent implements OnInit {
 
   public getSearchResults() {
     this.router.navigate(['/currency-tracker-search', this.searchValue])
+    this.ngOnInit()
   }
-
 }

@@ -8,12 +8,14 @@
         <div class="container-fluid">
             <div class="row header border-bottom">
                 <div class="col-8">
-                    <span class="stock-symbol">TSLA</span>&nbsp;&nbsp;<span class="stock-name">TESLA</span>
+                    <span class="stock-symbol">{{ stockSymbol }}</span>&nbsp;&nbsp;<span class="stock-name">{{ stockName }}</span>
                 </div>
                 <div class="col">
-                    <div class="search-bar">
-                        <div class="form"> <i class="fa fa-search"></i> <input type="search"
-                                class="form-control form-input" placeholder="Search for a stock by symbol or keyword">
+                    <div class="input-group">
+                        <div class="input-group">
+                            <input type="search" class="form-control rounded" [(ngModel)]="searchValue" placeholder="Search by keyword" aria-label="Search"
+                            aria-describedby="search-addon" />
+                            <button type="button" class="btn btn-outline-primary" (click)="getSearchResults()">Search</button>
                         </div>
                     </div>
                 </div>

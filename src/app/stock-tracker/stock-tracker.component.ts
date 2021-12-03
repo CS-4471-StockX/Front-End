@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from "@angular/router";
 import { createOfflineCompileUrlResolver } from '@angular/compiler';
 
 @Component({
@@ -9,6 +10,7 @@ import { createOfflineCompileUrlResolver } from '@angular/compiler';
 })
 
 export class StockTrackerComponent implements OnInit {
+
   stockHourlyData: any = []
   stockDailyData: any = []
   stockWeeklyData: any = []
@@ -34,18 +36,38 @@ export class StockTrackerComponent implements OnInit {
   monthLinkColour: string = '#808080'
   yearLinkColour: string = '#808080'
 
+  public stockList: Array<any> = ["TESLA"]
+  public resultsList: Array<any> = []
+  public searchValue: string = ""
+  apiCallStock: string = 'https://live-stock-tracker.stockx.software/stock-quote?ticker=' + this.searchValue
+  apiCallGraph: string = 'https://live-stock-tracker.stockx.software/graphs?ticker=' + this.searchValue
+
   constructor(
     private httpClient: HttpClient,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const symbol = urlParams.get('symbol');
+    const name = urlParams.get('name');
+    if (symbol == null) {
+      this.stockSymbol = "ABC"
+      this.stockName = "ABC"
+    } else {
+      this.stockSymbol = String(symbol)
+      this.stockName = String(name)
+    }
+    this.apiCallStock = 'https://live-stock-tracker.stockx.software/stock-quote?ticker=' + symbol
+    this.apiCallGraph = 'https://live-stock-tracker.stockx.software/graphs?ticker=' + symbol
     this.getStockInfo();
     this.getStockGraphInfo();
 
   }
 
   getStockInfo(){
-    this.httpClient.get<any>('https://live-stock-tracker.stockx.software/stock-quote?ticker=TSLA').subscribe(
+    this.httpClient.get<any>(this.apiCallStock).subscribe(
       response => {
         this.currentPrice = response.currentPrice.toFixed(2)
         this.priceChange = response.priceChange.toFixed(2)
@@ -59,7 +81,7 @@ export class StockTrackerComponent implements OnInit {
   }
 
   getStockGraphInfo(){
-    this.httpClient.get<any>('https://live-stock-tracker.stockx.software/graphs?ticker=TSLA').subscribe(
+    this.httpClient.get<any>(this.apiCallGraph).subscribe(
       response => {
         this.stockHourlyData = response.minutes
         this.stockDailyData = response.hours
@@ -232,4 +254,8 @@ export class StockTrackerComponent implements OnInit {
 
   public chartClicked(e: any): void { }
   public chartHovered(e: any): void { }
+
+  public getSearchResults() {
+    this.router.navigate(['/stock-tracker-search', this.searchValue])
+  }
 }
