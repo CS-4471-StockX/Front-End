@@ -126,6 +126,7 @@ export class StockTrackerComponent implements OnInit {
   }
 
   reloadComponent() {
+    console.log(this.router.url)
     let currentUrl = this.router.url;
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';

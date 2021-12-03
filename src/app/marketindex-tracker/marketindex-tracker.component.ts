@@ -94,10 +94,12 @@ export class MarketIndexTrackerComponent implements OnInit {
     } else {
       this.onClickYear()
     }
+
+    this.subMarketIndexInfo(this.topic)
   }
 
   ngOnInit(): void {
-    this.getMarketIndexInfo(this.marketIndexTicker);
+    this.getMarketIndexInfo(this.marketIndexTicker)
     this.getMarketIndexGraphInfo(this.marketIndexTicker)
     this.subMarketIndexInfo(this.topic)
     this.onClickWeek()
@@ -106,7 +108,7 @@ export class MarketIndexTrackerComponent implements OnInit {
   @HostListener('unloaded')
   ngOnDestroy() {
     this.subbedIndex.unsubscribe()
-    this.httpClient.put<any>('https://subscription-manager.stockx.software/unsubscribe?symbol=' + this.marketIndexTicker + '&service=market-index-tracker-ws', null).subscribe()
+    this.httpClient.put<any>('https://subscription-manager.stockx.software/unsubscribe?symbol=%' + this.marketIndexTicker + '&service=market-index-tracker-ws', null).subscribe()
   } 
 
   subMarketIndexInfo(topic: string){
